@@ -1,11 +1,13 @@
 import logging
+import os
+
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, conlist
 
-from .agent_utils import detect_red_flags, extract_text_from_image, generate_reasoning
-from .ml_handler import ml_handler
+from agent_utils import detect_red_flags, extract_text_from_image, generate_reasoning
+from ml_handler import ml_handler
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -19,9 +21,16 @@ app = FastAPI(
 )
 
 # CORS configuration for the Next.js frontend
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    frontend_url
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

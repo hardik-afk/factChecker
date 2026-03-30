@@ -4,7 +4,7 @@ from typing import List
 
 import google.generativeai as genai
 
-from .config import GEMINI_API_KEY, RED_FLAGS
+from config import GEMINI_API_KEY, RED_FLAGS
 
 logger = logging.getLogger(__name__)
 
